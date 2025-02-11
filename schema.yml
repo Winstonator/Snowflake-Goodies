@@ -1,0 +1,680 @@
+version: 2
+
+models:
+    - name: DIM_AGENCY
+
+      description: "A TYPE1 dbt model for Agency"
+
+    - name: DIM_AGENCY_USER
+
+      description: "A TYPE1 dbt model for Agency User"
+
+    - name: DIM_REQUISITION
+      
+      description: "A TYPE1 dbt model for Requisition"
+
+    - name: FACT_JOB_POSTING
+      
+      description: "A Fact model for Job Posting"
+
+    - name: DIM_POSITION
+      
+      description: "A TYPE2 dbt model for position"
+
+    - name: FACT_QUESTIONNAIRE
+      
+      description: "A Fact model for Questionnaire" 
+
+    - name: FACT_JOB_APP_QUESTIONNAIRE
+      
+      description: "A Fact model for Job Application Questionnaire"
+
+    - name: DIM_JOB
+      description: "A snapshot dbt model for Job Code"
+
+    - name: DIM_JOB_CLASS
+      description: "A snapshot dbt model for Job Class"
+
+    - name: FACT_APPLICATION_EVENT
+      description: "A Fact model for Job Application Event" 
+
+    - name: DIM_SECURITY_USER_BASED
+      description: "A Dim model for User Security"
+
+    - name: DIM_JOB_DESC
+      description: "A Dim model for Position job description"
+
+    - name: FACT_POSITION_EVENTS
+      description: "A Fact model for Position Events"
+
+    - name: DIM_EVENT_CLASSIFICATION_CURR
+      description: "A Dim model for Event Classification"
+
+    - name: DIM_PAY_COMPONENT_GROUPS
+      description: "A Dim model for Pay Component Groups"
+
+    - name: DIM_PAY_ACCUMULATORS
+      description: "A Dim model for Pat Accumulators"
+
+    - name: DIM_MANAGER_ORG
+      description: "A Dim model for Manager Org"
+
+    - name: DIM_PAYCODES
+      description: "A Dim model for Paycode Earnings and Deductions"
+
+    - name: DIM_ORGANIZATION
+      description: "A Dim model for Organizations"
+    
+    - name: DIM_SUPERVISOR_ORG
+      description: "A Dim model for Supervisor Org"
+
+    - name: DIM_LOCATION
+      description: "A Dim model for Location"
+
+    - name: DIM_PAY_COMPONENTS_REL_CALCS
+      description: "A Dim model for Pay Components Rel Calcs"
+
+    - name: DIM_PAY_ACCUMULATORS_ADD_TO
+      description: "A Dim model for Pay Accumulators Add"
+
+    - name: DIM_PAY_ACCUMULATORS_EXCEPTION_OPTION
+      description: "A Dim model for Pay Accumulators Exception"
+
+    - name: DIM_PAY_ACCUMULATORS_SUBTRACT_FROM
+      description: "A Dim model for Pay Accumulators Subtract"  
+
+    - name: DIM_TIME_OFF
+      description: "A Type 1 Dimension of time off"
+      columns:
+        - name: ENTRY_COMMENT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: ENTRY_REASON_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: TYPE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: FACT_TIME_OFF_EVENTS
+      description: "A fact model of time off events"
+      columns:
+        - name: BP_REASON_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: DIM_COMP_GRADE_PROFILE
+      description: "A Dim model for Compensation Grade Profile"
+      columns:
+        - name: GRADE_PROFILE_MID_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PAY_RANGE_SPREAD_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: GRADE_PROFILE_MAX_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: GRADE_PROFILE_MIN_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: DIM_CANDIDATE
+      description: "A TYPE1 dbt model for Candidate"
+      columns:
+        - name: NATIONAL_ID_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: EMAIL_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: CAND_CITY_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: RESUME_TEXT_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: CAND_BIRTH_DT_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: CAND_DO_NOT_HIRE_IND_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CAND_GENDER_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CAND_LOCATION_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: CAND_RACE_ETHNICITY_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CAND_WITHDRAWN_IND_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COUNTRY_POSTAL_CD_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: CAND_DISABILITY_STATUS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: ALL_ACTIVITY_STREAM_COMMENTS_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: CAND_ADDRESS_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: CAND_VETERAN_STATUS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PHONE_NBR_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+      
+
+    - name: DIM_APPLICATION
+      description: "A TYPE1 dbt model for Application"
+      columns:
+        - name: CAND_DISPOSITION_STAGE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: JOB_APP_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: JOB_APP_DISPOSITION_REASON_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CAND_DISPOSITION_REASON_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: JOB_FILLED_FROZEN_CLOSED_IND_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+      
+
+    - name: FACT_CANDIDATE_INTERVIEWS
+      description: "A FACT dbt model for Candidate Interviews"
+
+      columns:
+        - name: cand_interview_pk
+          tests:
+            - unique
+            - not_null
+        - name: feedback_competency_rating_sens
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: feedback_event_id_sens
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: feedback_overall_rating_sens
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: INTERVIEW_RATING_AVG_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: feedback_rating_overall_vs_competency_sens
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+    
+    - name: DIM_EMPLOYEE
+      description: "dimension table capture employee data"
+      columns:
+        - name: OTHER_IDS_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: ACQUISITION_ID
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: TERM_REASON_SENS
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: CONTINUOUS_SERVICE_DT_SENS
+          meta:
+            masking_policy: DATE_PARTIAL_MASK_PLCY
+        - name: ALL_HOME_ADDRESSES_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: BIRTH_DT_PII
+          meta:
+            masking_policy: DATE_FULL_MASK_PLCY
+        - name: ELIGIBLE_FOR_REHIRE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: EMAIL_HOME_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: PHONE_NBRS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRIM_ADDRESS_LINE_4_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: VESTING_DT_SENS
+          meta:
+            masking_policy: DATE_PARTIAL_MASK_PLCY
+        - name: PRIM_POSTAL_CD_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: EEO_RACE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: HISPANIC_OR_LATINO_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: LATEST_EXT_RESPONSE_DT_OF_DISABILITY_SELF_ID_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: MOBILE_PHONES_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRIM_CITY_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: SSN_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: VETERAN_STATUS_ID_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: LATEST_EXT_DISABILITY_STATUS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: GENDER_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: LATEST_EXT_DISABILITY_RESPONSE_REC_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRIM_ADDRESS_LINE_3_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: ETHNICITY_CD_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: EEO_RACE_VISUAL_SURVEY_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: GENERATION_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: HISPANIC_OR_LATINO_VISUAL_SURVEY_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRIM_ADDRESS_LINE_1_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: PRIM_ADDRESS_LINE_2_PII
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: TERM_REASON_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: HRLY_RATE_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: TOTAL_BASE_PAY_PAYROLL_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: TOTAL_PAY_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: DIM_EMPLOYEE_PAY
+      description: "dimension table capture employee pay data"
+      columns:
+        - name: COST_TO_REPLACE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: HRLY_RATE_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: TOTAL_BASE_PAY_PAYROLL_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: TOTAL_PAY_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: FACT_WORKER_POSITION_CHANGES
+      description: "A Fact model for Worker Position Changes"
+      columns:
+        - name: PREV_BASE_PAY_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: NEW_BASE_PAY_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: ERP_NPS_AOS
+      description: "Net Promoter Score and Always on Time metrics"
+
+    - name: ERP_OP_INC_GROSS_REV
+      description: "Financial metrics"
+
+    - name: ERP_SAFETY_FREQUENCY
+      description: "Safety metrics"
+
+    - name: FACT_TALENT_REVIEWS
+      description: "A Fact model for Talent Reviews"
+      columns:
+        - name: MATRIX_REVIEW_RATING_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: POTENTIAL_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: RETENTION_RISK_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: ACHIEVABLE_LEVEL_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: LOSS_IMPACT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: FACT_TALENT_CALIBRATIONS
+      description: "A Fact model for Talent Calibration Reviews"
+      columns:
+        - name: CALIB_BOX_COMPLETED_VALUE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CALIB_BOX_VALUE_NBR_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CALIB_VALUE_COLUMN_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CALIB_VALUE_ROW_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        
+    - name: DIM_COMP_PLAN
+      description: "A Dim model for Compensation Plans"
+      columns:
+        - name: PLAN_ID_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_ELEMENT_ID_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_ELIGIBILITY_RULE_ID_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_TYPE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_COMPONENTS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_COMP_BASIS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_APPLY_FTE_PCT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_FREQ_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_ELEMENT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_ELEMENT_GRADE_PROFILE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_ELEMENT_GROUPS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: ELIGIBILITY_RULE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CONDITION_RULE_AS_TEXT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CURR_USAGES_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: CREATED_FROM_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: USED_AS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: USED_AS_A_SUB_RULE_FROM_ITEM_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_PROFILES_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_PROFILE_TARGET_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_PROFILE_TARGET_PCT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PLAN_PROFILE_TARGET_RULES_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: FACT_PAYROLL_RESULTS
+      description: "a fact dbt model for Payroll results"
+      columns:
+        - name: PAYROLL_RESULT_PK
+          tests:
+            - unique
+            - not_null
+        - name: PR_WORKED_TOTAL_HRS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PR_RESULT_WORKED_HRS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PR_FEDERAL_ALLOWANCE_PLUS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PR_NET_PAY_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PR_OFFCYCLE_REASON_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PR_FEDERAL_ALLOWANCE_CNT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PR_FEDERAL_MARITAL_STATUS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PR_GROSS_PAY_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PR_STATE_ALLOWANCE_CNT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: FACT_PAYROLL_RESULT_LINES
+      description: "a fact dbt model for Payroll result lines"
+      columns:
+        - name: PAYROLL_RESULT_LINES_PK
+          tests:
+            - unique
+            - not_null
+        - name: PRL_JOURNAL_ENTRIES_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRL_RLC_WORKED_HRS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRL_UNPRORATED_HRS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRL_RLC_TAXABLE_HRS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRL_RLC_TOTAL_HRS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRL_RESULT_LINE_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRL_PAYROLL_WORKTAGS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRL_PAYCODE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRL_RLC_SCHEDULED_HRS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PRL_RESULT_LINE_HRS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: FACT_PAYROLL_INPUTS
+      description: "a fact dbt model for Payroll inputs"
+      columns:
+        - name: PAYROLL_INPUT_SK
+          tests:
+            - unique
+            - not_null
+        - name: PI_AMT_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PI_BATCH_ID_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PI_PAY_CODE_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: FACT_JOURNAL_ENTRIES
+      description: "a fact dbt model for journal entries"
+      columns:
+        - name: JOURNAL_ENTRIES_SK
+          tests:
+            - unique
+            - not_null
+        - name: PRL_JOURNAL_ENTRIES_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: FACT_WORKER_EVENTS
+      description: "A Fact model for All Worker Events"
+      columns:
+        - name: BP_REASON_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: TERM_REGRETTABLE_STATUS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: TERM_ELIGIBLE_FOR_REHIRE_IND_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: TERM_AVAIL_FOR_JOB_OVERLAP_IND_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: TERM_ALL_COMMENTS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: LOA_ALL_ESI_BK_COMMENTS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: LOA_ALL_ESI_COMMENTS_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: EVENT_CLASSIFICATION_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: BP_REASON_CATEGORY_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+
+    - name: FACT_COMPENSATION_CHANGES
+      description: "A Fact model for Compensation Change Events"
+      columns:
+        - name: BP_REASON_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_CURR_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_PROPOSED_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_GRADE_CURR_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_GRADE_PROPOSED_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_GRADE_PROFILE_CURR_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_GRADE_PROFILE_PROPOSED_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_PLANS_CURR_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: COMP_PLANS_PROPOSED_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PROPOSED_COMP_EQUALS_CURR_COMP_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: BASE_PAY_CURR_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: BASE_PAY_PROPOSED_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PAY_RANGE_MIN_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PAY_RANGE_MID_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        - name: PAY_RANGE_MAX_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+
+    - name: DIM_COSTING_ALLOWCATIONS
+      columns:
+        - name: PAY_CD_SENS
+          meta:
+            masking_policy: STRING_PARTIAL_MASK_PLCY
+        # - name: DIST_PCT_SENS
+        #   meta:
+        #     masking_policy: STRING_PARTIAL_MASK_PLCY
+        
+    - name: DIM_PAY_CD_TO_COMP_GROUP
+      columns:
+        - name: PAYCODE_COMPONENT_GROUP_SK
+          tests:
+            - unique
+            - not_null
+
+    - name: FACT_REFERRALS
+      description: "a fact dbt model for referral events"
+
+    - name: DIM_ROLE_ASSIGNMENTS_BY_ORG
+      description: "a dim dbt model for role assignments by org"
+
+    - name: FACT_JOB_APP_QUESTIONNAIRES
+      description: "a fact dbt model for job application questionnaires"
+      
+    - name: FACT_NOTIFICATIONS
+      description: "A fact model of notification events"
+
+    - name: DIM_COSTING_ALLOCATIONS
+      description: "Dim model for costing allocations"
+      columns:
+        - name: PAY_CD_SENS
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
+        - name: DIST_PCT_SENS
+          meta:
+            masking_policy: STRING_FULL_MASK_PLCY
