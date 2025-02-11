@@ -1,0 +1,99 @@
+{{
+  config(
+    materialized='table',
+    tags=["core","dim","scheduled-daily"]
+  )
+}}
+
+WITH
+RAWDATA AS (
+  SELECT 
+    EIN AS EMP_ID
+  , WORKER_WID AS WORKER_WID
+  , ORG_REF_ID AS ORG_ID
+  , ORG_ROLE_ASSIGNMENT_WID AS ORG_ROLE_ASSIGNMENT_WID
+  , WORKDAY_ACCOUNT AS WKD_ACCOUNT
+  , ROLE_NAME AS ROLE_NAME
+  , ORGANIZATION_TYPE AS ORG_TYPE
+  , ORGANIZATION AS ORG
+  , CREATED_ON_DTM AS CREATED_ON_DTM
+  , RPT_EFFECTIVE_DT AS RPT_EFF_DT
+  , ROW_NUMBER() OVER (PARTITION BY ORG_ROLE_ASSIGNMENT_WID, EMP_ID ORDER BY RPT_EFFECTIVE_DT) AS RN
+  FROM {{ source('STAGING','STG_WKD_ROLE_ASSIGNMENTS_BY_ORG') }}
+),
+
+RNO_LOAD AS (
+  SELECT *
+  , ROW_NUMBER() OVER (PARTITION BY 
+      EMP_ID
+    , WORKER_WID
+    , ORG_ID
+    , ORG_ROLE_ASSIGNMENT_WID
+    , WKD_ACCOUNT
+    , ROLE_NAME
+    , ORG_TYPE
+    , ORG
+    , CREATED_ON_DTM
+    ORDER BY RN, RPT_EFF_DT) AS RNO
+  FROM RAWDATA
+),
+
+DE_DUP AS (
+  SELECT *
+  , ROW_NUMBER() OVER (PARTITION BY
+      EMP_ID
+    , WORKER_WID
+    , ORG_ID
+    , ORG_ROLE_ASSIGNMENT_WID
+    , WKD_ACCOUNT
+    , ROLE_NAME
+    , ORG_TYPE
+    , ORG
+    , CREATED_ON_DTM
+    , RN-RNO
+    ORDER BY RPT_EFF_DT) AS NUM
+  FROM RNO_LOAD
+  QUALIFY NUM = 1
+),
+
+-- Disappear Logic:  Mark those as discontinued as of the date they are no longer present in STG
+FINAL AS (
+  SELECT DE_DUP.*
+  , DE_DUP.RPT_EFF_DT AS EFF_DT
+  , LEAD(DE_DUP.RPT_EFF_DT) OVER (PARTITION BY DE_DUP.ORG_ROLE_ASSIGNMENT_WID, DE_DUP.EMP_ID
+                ORDER BY DE_DUP.ORG_ROLE_ASSIGNMENT_WID, DE_DUP.EMP_ID, DE_DUP.RPT_EFF_DT) AS LEAD_EFF_DT
+  , stg_sk.rpt_effective_dt as MAX_EFF_DT_BY_SK
+  , stg_file.rpt_effective_dt as MAX_EFF_DT_BY_FILE
+  FROM DE_DUP
+  JOIN (select org_role_assignment_wid, ein, max(rpt_effective_dt) as rpt_effective_dt
+        from {{ source('STAGING','STG_WKD_ROLE_ASSIGNMENTS_BY_ORG') }} group by 1,2) stg_sk -- For Disappear Logic
+    on stg_sk.org_role_assignment_wid = de_dup.org_role_assignment_wid
+    and stg_sk.ein = de_dup.emp_id
+  JOIN (select max(rpt_effective_dt) as rpt_effective_dt
+        from {{ source('STAGING','STG_WKD_ROLE_ASSIGNMENTS_BY_ORG') }}) stg_file -- For Disappear Logic
+)
+
+SELECT
+  {{ dbt_utils.surrogate_key(['ORG_ROLE_ASSIGNMENT_WID','EMP_ID','RPT_EFF_DT']) }} AS ROLE_ASSIGN_SK
+, EMP_ID
+, WORKER_WID
+, ORG_ID
+, ORG_ROLE_ASSIGNMENT_WID
+, WKD_ACCOUNT
+, ROLE_NAME
+, ORG_TYPE
+, ORG
+, CREATED_ON_DTM
+, RPT_EFF_DT
+, 'WKD' AS REC_SRC
+, EFF_DT
+, COALESCE(
+  CASE WHEN EFF_DT = LEAD_EFF_DT THEN EFF_DT
+        WHEN LEAD_EFF_DT IS NULL AND MAX_EFF_DT_BY_SK < MAX_EFF_DT_BY_FILE THEN MAX_EFF_DT_BY_SK -- Disappear logic
+  ELSE LEAD_EFF_DT - 1
+  END, '9999-12-31') as DISC_DT
+, CASE WHEN DISC_DT = '9999-12-31' THEN TRUE ELSE FALSE END AS IS_CURRENT
+, TO_NUMBER(TO_VARCHAR(CURRENT_TIMESTAMP, 'YYYYMMDDHH24MISS')) AS INS_BATCH_ID
+, TO_NUMBER(TO_VARCHAR(CURRENT_TIMESTAMP, 'YYYYMMDDHH24MISS')) AS UPD_BATCH_ID
+, {{ dbt_utils.surrogate_key(['WORKER_WID','ORG_ID','WKD_ACCOUNT','ROLE_NAME','ORG_TYPE','ORG','CREATED_ON_DTM']) }} AS DBT_HASH
+FROM FINAL
